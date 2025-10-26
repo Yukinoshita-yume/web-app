@@ -41,6 +41,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { registerApi } from "@/api/api";
+import { filterProfanity } from "@/utils/profanityFilter";
 
 const router = useRouter();
 
@@ -66,11 +67,12 @@ const goToLogin = () => {
 
 async function AxiosRegister() {
   try {
+    // Filter profanity from all text inputs
     const userData = {
-      first_name: firstName.value.trim(),
-      last_name: lastName.value.trim(),
-      email: email.value.trim(),
-      password: password.value
+      first_name: filterProfanity(firstName.value.trim()),
+      last_name: filterProfanity(lastName.value.trim()),
+      email: filterProfanity(email.value.trim()),
+      password: password.value // Password doesn't need filtering
     };
     const res = await registerApi(userData);
     console.log(res);

@@ -92,6 +92,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { getEventApi, updateEventApi, deleteEventApi, registerEventApi, createQuestionApi, deleteQuestionApi, upvoteQuestionApi, downvoteQuestionApi } from '@/api/api';
 import { getToken } from '@/utils/auth';
+import { filterProfanity } from '@/utils/profanityFilter';
 
 const router = useRouter();
 const route = useRoute();
@@ -205,7 +206,7 @@ const submitQuestion = async () => {
   
   try {
     await createQuestionApi(event.value.event_id, {
-      question: newQuestion.value
+      question: filterProfanity(newQuestion.value)
     });
     alert('Question submitted successfully!');
     newQuestion.value = '';

@@ -46,6 +46,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { createEventApi } from "@/api/api";
 import { getToken } from "@/utils/auth";
+import { filterProfanity } from "@/utils/profanityFilter";
 
 const router = useRouter();
 const loading = ref(false);
@@ -104,9 +105,9 @@ const handleSubmit = async () => {
   try {
     // Format data according to API
     const submitData = {
-      name: eventData.value.name.trim(),
-      description: eventData.value.description.trim(),
-      location: eventData.value.location.trim(),
+      name: filterProfanity(eventData.value.name.trim()),
+      description: filterProfanity(eventData.value.description.trim()),
+      location: filterProfanity(eventData.value.location.trim()),
         start: new Date(eventData.value.start).getTime(), // Convert to milliseconds timestamp
         close_registration: new Date(eventData.value.close_registration).getTime(),
       max_attendees: parseInt(eventData.value.max_attendees)
