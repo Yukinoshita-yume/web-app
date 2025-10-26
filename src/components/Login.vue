@@ -48,11 +48,8 @@ const goToRegister = () => {
 
 async function AxiosLogin() {
   try {
-    // Filter profanity from inputs
-    const filteredEmail = filterProfanity(email.value);
-    const filteredPassword = password.value; // Password doesn't need filtering
     
-    const res = await loginApi(filteredEmail, filteredPassword);
+    const res = await loginApi(email.value, password.value);
     console.log(res);
     if (res.session_token) {
       setToken(res.session_token);

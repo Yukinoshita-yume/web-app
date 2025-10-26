@@ -118,7 +118,7 @@ const handleSubmit = async () => {
     
     if (res.event_id) {
       alert('Event created successfully!');
-      router.push({
+      router.replace({
         path: '/event-detail',
         query: { id: res.event_id }
       });

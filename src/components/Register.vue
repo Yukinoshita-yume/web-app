@@ -71,8 +71,8 @@ async function AxiosRegister() {
     const userData = {
       first_name: filterProfanity(firstName.value.trim()),
       last_name: filterProfanity(lastName.value.trim()),
-      email: filterProfanity(email.value.trim()),
-      password: password.value // Password doesn't need filtering
+      email: email.value.trim(),
+      password: password.value 
     };
     const res = await registerApi(userData);
     console.log(res);
