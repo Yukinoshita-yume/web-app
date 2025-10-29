@@ -86,7 +86,3 @@ Adopts the design style from login-page project:
 - Event data structure follows the API specification
 
 
-## bugs
-- 已删除的event的显示问题。home和user页
-- 点赞问题
-- 搜索选项不能叠加问题

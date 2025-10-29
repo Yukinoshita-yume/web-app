@@ -20,7 +20,7 @@
         <option v-if="hasLogin" value="ATTENDING">Attending</option>
       </select>
     </div>
-    <button v-if="hasLogin" class="create-event-header-btn" @click="goToCreateEvent">Create Event</button>
+    <!-- <button v-if="hasLogin" class="create-event-header-btn" @click="goToCreateEvent">Create Event</button> -->
     <div id="user" v-if="hasLogin" @click="goToUser()"></div>
     <div id="user-login" v-if="!hasLogin&&!loading" @click="goToLogin()"></div>
   </header>
@@ -484,7 +484,7 @@ input[type="search"]::-webkit-search-cancel-button {
   width: 40%;
 }
 
-.create-event-header-btn {
+/* .create-event-header-btn {
   position: absolute;
   left: 150px;
   top: 30%;
@@ -507,5 +507,5 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .create-event-header-btn:active {
   transform: scale(0.98);
-}
+} */
 </style>

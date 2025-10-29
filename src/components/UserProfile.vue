@@ -223,6 +223,7 @@ const goBack = () => {
 
 const logout = () => {
   removeToken();
+  localStorage.removeItem('userId');
   router.push('/login');
 };
 

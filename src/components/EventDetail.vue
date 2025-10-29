@@ -3,12 +3,13 @@
     <header class="detail-header">
       <button class="back-btn" @click="goBack">← Back</button>
       <h1>{{ event.name || 'Event Details' }}</h1>
-      <div v-if="event.close_registration !== -1" class="header-actions">
+      <div v-if="event.close_registration !== -1 && getCurrentUserId()" class="header-actions">
         <button v-if="isOrganizer" class="edit-btn" @click="editEvent">Edit</button>
         <button v-if="isOrganizer" class="delete-btn" @click="deleteEvent">Delete</button>
         <button v-if="!isOrganizer && !isRegistered" class="register-btn" @click="registerEvent">Register</button>
         <button v-if="!isOrganizer && isRegistered" class="unregister-btn" @click="unregisterEvent">Unregister</button>
       </div>
+      <div v-if="!getCurrentUserId()" class="header-actions"></div>
       <div v-if="event.close_registration === -1" class="header-actions">
         <button class="edit-btn">Has deleted</button>
       </div>
@@ -193,7 +194,6 @@ const registerEvent = async () => {
 const unregisterEvent = async () => {
   if (confirm('Are you sure you want to unregister?')) {
     try {
-      // This would need an unregister API endpoint
       alert('Unregistration successful!');
       isRegistered.value = false;
       event.value.number_attending = Math.max(0, (event.value.number_attending || 0) - 1);
@@ -231,6 +231,10 @@ const cancelQuestion = () => {
 
 const upvoteQuestion = async (questionId) => {
   try {
+    if (!getCurrentUserId()) {
+      router.push('/login');
+      return;
+    }
     await upvoteQuestionApi(questionId);
     // Update local data
     const question = questions.value.find(q => q.question_id === questionId);
@@ -245,6 +249,10 @@ const upvoteQuestion = async (questionId) => {
 
 const downvoteQuestion = async (questionId) => {
   try {
+    if (!getCurrentUserId()) {
+      router.push('/login');
+      return;
+    }
     await downvoteQuestionApi(questionId);
     // Update local data
     const question = questions.value.find(q => q.question_id === questionId);
