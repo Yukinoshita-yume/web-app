@@ -10,7 +10,7 @@
       <div class="user-info-card">
         <div class="user-avatar">
           <div class="avatar-circle">
-            {{ getInitials(userInfo.name || 'User') }}
+            {{ getInitials(userInfo.last_name || 'User') }}
           </div>
         </div>
         <div class="user-details">
@@ -60,8 +60,9 @@
                 </div>
               </div>
               <div class="event-actions">
-                <button @click.stop="editEvent(event)" class="edit-btn">Edit</button>
-                <button @click.stop="deleteEvent(event)" class="delete-btn">Delete</button>
+                <button v-if="event.close_registration !== -1" @click.stop="editEvent(event)" class="edit-btn">Edit</button>
+                <button v-if="event.close_registration !== -1" @click.stop="deleteEvent(event)" class="delete-btn">Delete</button>
+                <div v-if="event.close_registration === -1"  class="edit-btn">Has deleted</div>
               </div>
             </div>
             <div v-if="createdEvents.length === 0" class="empty-state">
@@ -112,7 +113,6 @@
                 </div>
                 <div class="question-stats">
                   <span class="upvotes">👍 {{ question.votes || 0 }}</span>
-                  <span class="downvotes">👎 {{ question.downvotes || 0 }}</span>
                 </div>
               </div>
               <div class="question-actions">
@@ -247,7 +247,7 @@ const editEvent = (event) => {
 const deleteEvent = async (event) => {
   if (confirm(`Are you sure you want to delete event "${event.name}"?`)) {
     try {
-      // Here should call delete event API
+      await deleteEventApi(event.value.event_id);
       alert('Event deleted successfully');
       loadUserData(); // Reload data
     } catch (error) {

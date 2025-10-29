@@ -3,11 +3,14 @@
     <header class="detail-header">
       <button class="back-btn" @click="goBack">← Back</button>
       <h1>{{ event.name || 'Event Details' }}</h1>
-      <div class="header-actions">
+      <div v-if="event.close_registration !== -1" class="header-actions">
         <button v-if="isOrganizer" class="edit-btn" @click="editEvent">Edit</button>
         <button v-if="isOrganizer" class="delete-btn" @click="deleteEvent">Delete</button>
         <button v-if="!isOrganizer && !isRegistered" class="register-btn" @click="registerEvent">Register</button>
         <button v-if="!isOrganizer && isRegistered" class="unregister-btn" @click="unregisterEvent">Unregister</button>
+      </div>
+      <div v-if="event.close_registration === -1" class="header-actions">
+        <button class="edit-btn">Has deleted</button>
       </div>
     </header>
 
@@ -62,6 +65,9 @@
 
         <div class="questions-list">
           <div v-for="question in questions" :key="question.question_id" class="question-item">
+            <button v-if="canDeleteQuestion(question)" @click="deleteQuestion(question.question_id)" class="delete-question-btn">
+                Delete
+              </button>
             <div class="question-content">
               <div class="question-text">{{ question.question }}</div>
               <div class="question-meta">
@@ -70,14 +76,14 @@
               </div>
             </div>
             <div class="question-actions">
+              <div class="heart-icon-circle">
+                <div class="heart"><span style="z-index: 1;">{{ question.votes || 0 }}</span></div>
+              </div>
               <button @click="upvoteQuestion(question.question_id)" class="vote-btn upvote">
-                👍 {{ question.votes || 0 }}
+                👍 
               </button>
               <button @click="downvoteQuestion(question.question_id)" class="vote-btn downvote">
-                👎 {{ question.downvotes || 0 }}
-              </button>
-              <button v-if="canDeleteQuestion(question)" @click="deleteQuestion(question.question_id)" class="delete-question-btn">
-                Delete
+                👎 
               </button>
             </div>
           </div>
@@ -106,7 +112,7 @@ const isRegistered = ref(false);
 const isOrganizer = ref(false);
 
 const canDeleteQuestion = (question) => {
-  return isOrganizer.value || question.author_id === getCurrentUserId();
+  return isOrganizer.value || question.asked_by.user_id === getCurrentUserId();
 };
 
 const getCurrentUserId = () => {
@@ -233,6 +239,7 @@ const upvoteQuestion = async (questionId) => {
     }
   } catch (error) {
     console.error('Failed to upvote:', error);
+    alert(error.response?.data?.error_message || 'Failed to upvote question');
   }
 };
 
@@ -246,6 +253,7 @@ const downvoteQuestion = async (questionId) => {
     }
   } catch (error) {
     console.error('Failed to downvote:', error);
+    alert(error.response?.data?.error_message || 'Failed to downvote question');
   }
 };
 
@@ -263,6 +271,7 @@ const deleteQuestion = async (questionId) => {
 
 const formatDateTime = (timestamp) => {
   if (!timestamp) return 'TBD';
+  if (timestamp === -1) return 'Deleted';
   const date = new Date(timestamp); // API returns timestamp in milliseconds
   return date.toLocaleString('en-US');
 };
@@ -461,6 +470,7 @@ const formatTime = (dateString) => {
 }
 
 .question-item {
+  position: relative;
   border: 1px solid #eee;
   border-radius: 8px;
   padding: 15px;
@@ -509,7 +519,59 @@ const formatTime = (dateString) => {
   color: #f44336;
 }
 
+.heart-icon-circle {
+
+  height: 30px; 
+  
+
+  aspect-ratio: 1 / 1; 
+
+  border-radius: 50%;
+  background-color: #FADADD;
+  
+
+  display: grid;
+  place-items: center;
+}
+
+.heart {
+  position: relative;
+  width: 60%;
+  height: 55.5%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 52%; 
+  height: 100%;
+  background: rgba(255,255,255,1); 
+  
+  border-radius: 50% 50% 0 0;
+}
+
+.heart::before {
+  left: 50%;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.heart::after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
 .delete-question-btn {
+  position: absolute;
+  right: 5px;
+  top: 5px;
   padding: 5px 10px;
   background-color: #f44336;
   color: white;

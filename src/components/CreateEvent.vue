@@ -18,7 +18,7 @@
         <div class="input-row">
           <div class="input-field half">
             <label>Start Time</label>
-            <input type="datetime-local" v-model="eventData.start" required />
+            <input type="datetime-local" v-model="eventData.start" required/>
           </div>
           <div class="input-field half">
             <label>Registration Closes</label>

@@ -13,8 +13,8 @@
     </div>
     <div id="filter-box">
       <select v-model="statusFilter" @change="loadEvents" class="filter-select">
-        <option value="">All Events</option>
         <option value="OPEN">Open for Registration</option>
+        <option value="">All Events</option>
         <option value="ARCHIVE">Past Events</option>
         <option v-if="hasLogin" value="MY_EVENTS">My Events</option>
         <option v-if="hasLogin" value="ATTENDING">Attending</option>
@@ -86,7 +86,7 @@ import { removeToken, getToken } from "@/utils/auth";
 const router = useRouter();
 const loading = ref(true);
 const searchQuery = ref("");
-const statusFilter = ref("");
+const statusFilter = ref("OPEN");
 const page = ref(1);
 const pageSize = ref(10);
 const hasLogin = ref(false);
@@ -140,6 +140,7 @@ const goToDetail = (eventId) => {
 
 const formatDate = (timestamp) => {
   if (!timestamp) return '';
+  if (timestamp === -1) return 'Deleted';
   const date = new Date(timestamp); // API returns timestamp in milliseconds
   return date.toLocaleDateString('en-US');
 };
