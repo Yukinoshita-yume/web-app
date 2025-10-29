@@ -1,6 +1,11 @@
 # Eventitude Web App
 
-A Vue 3 frontend application for the Eventitude event management system, built using the design style from login-page project.
+A Vue 3 frontend application for the Eventitude event management system.
+
+## Link
+
+https://github.com/Yukinoshita-yume/web-app  
+*Please clone the main branch*
 
 ## Features
 
@@ -39,6 +44,7 @@ src/
 - **CreateEvent.vue** - Create event page
 - **UserProfile.vue** - User profile center
 - **ConfirmDialog.vue** - Confirmation dialog component
+- **EditEvent.vue** - Edit the event that has created
 
 ## API Endpoints
 
@@ -85,4 +91,15 @@ Adopts the design style from login-page project:
 - API expects `first_name` and `last_name` for user registration
 - Event data structure follows the API specification
 
+## Project Run & Start Instructions
 
+### Environment
+- node.js 17 or higher version
+- git
+### Project construction
+- Download dependency  
+``` npm install ```
+- Running  
+``` npm run dev ```
+- Build  
+``` npm run build ```
